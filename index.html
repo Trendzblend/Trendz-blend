@@ -116,5 +116,48 @@ function placeOrder(){
 }
 renderCart();
 </script>
+<!-- Trendz Blend Order Checkout -->
+<div id="checkout" style="display:none; padding:20px; max-width:600px; margin:auto;">
+  <h2>Complete Your Order</h2>
+
+  <label>Name</label>
+  <input id="customerName" type="text" placeholder="Your name"
+    style="width:100%;padding:12px;margin:8px 0;">
+
+  <label>Phone</label>
+  <input id="customerPhone" type="tel" placeholder="Phone number"
+    style="width:100%;padding:12px;margin:8px 0;">
+
+  <label>Delivery Address</label>
+  <textarea id="customerAddress" placeholder="Full delivery address"
+    style="width:100%;padding:12px;margin:8px 0;"></textarea>
+
+  <div id="orderSummary" style="margin:15px 0;"></div>
+
+  <button onclick="placeOrder()"
+    style="width:100%;padding:14px;background:#111;color:white;border:0;border-radius:6px;">
+    Continue to 20% Advance Payment
+  </button>
+</div>
+
+<script>
+function calculateAdvance(total) {
+  return (total * 0.20).toFixed(2);
+}
+
+function placeOrder() {
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const address = document.getElementById("customerAddress").value.trim();
+
+  if (!name || !phone || !address) {
+    alert("Please enter your name, phone number and delivery address.");
+    return;
+  }
+
+  alert("Your order is ready. The next step will be the 20% advance payment.");
+}
+
+<script>
 </body>
 </html>
