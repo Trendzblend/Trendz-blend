@@ -1,167 +1,703 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Trendz Blend — Online Store</title>
-<style>
-:root{--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--soft:#f7f7f8;--white:#fff}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#fff}
-button,input,textarea{font:inherit}.top{background:#111827;color:#fff;text-align:center;padding:9px;font-size:13px}
-nav{height:70px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;background:#fff;z-index:5}
-.logo{font-size:23px;font-weight:800;letter-spacing:-.6px}.logo span{font-weight:400}
-.cart{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;cursor:pointer}
-.hero{background:linear-gradient(135deg,#f3f4f6,#fff);padding:58px 6%;display:grid;grid-template-columns:1.05fr .95fr;gap:35px;align-items:center}
-.hero h1{font-size:clamp(38px,6vw,68px);line-height:.98;margin:0 0 18px;letter-spacing:-3px}.hero p{color:var(--muted);font-size:18px;max-width:520px}
-.badge{display:inline-block;background:#111827;color:#fff;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700}
-.hero-card{background:#fff;border-radius:24px;padding:18px;box-shadow:0 18px 55px #00000012}.hero-card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:18px}
-main{padding:50px 6%}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:22px}.section-head h2{font-size:30px;margin:0}.muted{color:var(--muted)}
-.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}.product{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff}.product img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#eef}.product-body{padding:17px}.product h3{margin:0 0 7px;font-size:18px}.price{font-size:23px;font-weight:800}.sub{font-size:12px;color:var(--muted);margin:5px 0 14px}.btn{border:0;background:#111827;color:#fff;border-radius:12px;padding:12px 15px;cursor:pointer;font-weight:700;width:100%}
-.info{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:40px}.info div{background:var(--soft);padding:22px;border-radius:18px}.info b{display:block;margin-bottom:6px}
-footer{margin-top:50px;background:#111827;color:#fff;padding:35px 6%;text-align:center}
-.overlay{display:none;position:fixed;inset:0;background:#0007;z-index:20}.drawer{position:absolute;right:0;top:0;height:100%;width:min(520px,100%);background:#fff;padding:24px;overflow:auto}.overlay.open{display:block}
-.close{float:right;border:0;background:none;font-size:25px;cursor:pointer}.cart-item{display:grid;grid-template-columns:75px 1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}.cart-item img{width:75px;height:75px;object-fit:cover;border-radius:12px}.qty{display:flex;gap:8px;align-items:center;margin-top:8px}.qty button{border:1px solid var(--line);background:#fff;border-radius:7px;width:28px;height:28px;cursor:pointer}
-.summary{margin-top:18px;padding:18px;background:var(--soft);border-radius:16px}.row{display:flex;justify-content:space-between;margin:8px 0}.total{font-size:19px;font-weight:800;border-top:1px solid var(--line);padding-top:10px}.checkout{margin-top:18px}.checkout input,.checkout textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;margin:6px 0 10px}.notice{font-size:13px;background:#fff8e1;border:1px solid #f1df9a;padding:12px;border-radius:10px;margin:10px 0 15px}.pay{background:#f0fdf4;border:1px solid #bbf7d0;padding:13px;border-radius:10px;margin:12px 0}.empty{text-align:center;padding:50px 0;color:var(--muted)}
-@media(max-width:750px){.hero{grid-template-columns:1fr;padding:40px 5%}.hero h1{letter-spacing:-2px}.info{grid-template-columns:1fr}main{padding:38px 5%}nav{padding:0 5%}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Trendz Blend | Fashion, Gadgets & More</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f7f7f7;
+      color: #111;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .cart-button {
+      background: white;
+      color: #111;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 55px 20px 35px;
+      background: white;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .products {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px 60px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      max-width: 380px;
+      margin: auto;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: contain;
+      background: #f5f5f5;
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+
+    .category {
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .product-name {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .colours {
+      color: #666;
+      margin-bottom: 18px;
+    }
+
+    .add-button,
+    .checkout-button,
+    .pay-button {
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      background: #111;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .add-button:hover,
+    .checkout-button:hover,
+    .pay-button:hover {
+      opacity: 0.85;
+    }
+
+    .info-section {
+      max-width: 900px;
+      margin: 0 auto 50px;
+      padding: 0 20px;
+      display: grid;
+      gap: 15px;
+    }
+
+    .info-box {
+      background: white;
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    .info-box b {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .muted {
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Cart */
+
+    #cartSection {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .cart-box {
+      background: white;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 15px;
+      min-height: 500px;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .close-button {
+      border: none;
+      background: #eee;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+    }
+
+    .cart-item img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .cart-details {
+      flex: 1;
+    }
+
+    .qty {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .qty button {
+      width: 30px;
+      height: 30px;
+      border: none;
+      background: #eee;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .summary {
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .advance {
+      font-weight: bold;
+    }
+
+    .balance {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    /* Checkout */
+
+    #checkout {
+      display: none;
+      margin-top: 25px;
+      border-top: 1px solid #ddd;
+      padding-top: 25px;
+    }
+
+    #checkout h3 {
+      margin-bottom: 15px;
+    }
+
+    .notice {
+      background: #fff4d6;
+      border: 1px solid #f0d78c;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    .payment-box {
+      background: #f5f5f5;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: #111;
+      color: white;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .cart-box {
+        margin: 10px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="top">20% advance payment required • Balance payable on delivery</div>
-<nav><div class="logo">Trendz <span>Blend</span></div><button class="cart" onclick="openCart()">Cart <span id="count">0</span></button></nav>
+
+<header>
+  <div class="logo">Trendz Blend</div>
+
+  <button class="cart-button" onclick="openCart()">
+    Cart <span id="cartCount">0</span>
+  </button>
+</header>
 
 <section class="hero">
-  <div>
-    <span class="badge">NEW ARRIVAL</span>
-    <h1>Trends.<br>Gadgets.<br>More.</h1>
-    <p>Shop fashion, electronics, lighting and everyday accessories from Trendz Blend.</p>
-  </div>
-  <div class="hero-card"><img src="tws-product.jpg" alt="Ultrapods Max TWS"></div>
+  <h1>Trends. Gadgets. More.</h1>
+  <p>
+    Shop fashion, electronics, lighting and everyday accessories from Trendz Blend.
+  </p>
 </section>
 
-<main>
-  <div class="section-head"><div><h2>Featured product</h2><div class="muted">Electronics</div></div></div>
-  <div class="product-grid">
-    <article class="product">
-      <img src="tws-product.jpg" alt="Ultrapods Max Wireless TWS">
-      <div class="product-body">
-        <h3>Ultrapods Max Wireless TWS</h3>
-        <div class="price">₹389</div>
-        <div class="sub">Colours: Black, White, Pink, Green, Blue</div>
-        <button class="btn" onclick="addToCart()">Add to Cart</button>
+<section class="products">
+
+  <div class="product-card">
+
+    <img src="tws-product.jpg" alt="Ultrapods Max Wireless TWS">
+
+    <div class="product-info">
+
+      <div class="category">Electronics</div>
+
+      <div class="product-name">
+        Ultrapods Max Wireless TWS
       </div>
-    </article>
+
+      <div class="price">
+        ₹389
+      </div>
+
+      <div class="colours">
+        Colours: Black, White, Pink, Green, Blue
+      </div>
+
+      <button class="add-button" onclick="addToCart()">
+        Add to Cart
+      </button>
+
+    </div>
+
   </div>
 
-  <div class="info">
-    <div><b>Easy shopping</b><span class="muted">Add products to your cart and checkout directly on the website.</span></div>
-    <div class="info">
-    <div><b>Easy shopping</b><span class="muted">Add products to your cart and checkout directly on the website.</span></div>
-    <div><b>More products coming</b><span class="muted">Clothing, bulbs, mobile accessories and other gadgets can be added later.</span></div>
-  </div>
-</main>
-    <div><b>More products coming</b><span class="muted">Clothing, bulbs, mobile accessories and other gadgets can be added later.</span></div>
-  </div>
-</main>
+</section>
 
-<footer>© 2026 Trendz Blend</footer>
+<section class="info-section">
 
-<div class="overlay" id="overlay" onclick="closeIfOutside(event)">
-  <div class="drawer" onclick="event.stopPropagation()">
-    <button class="close" onclick="closeCart()">×</button>
-    <h2>Your Cart</h2>
+  <div class="info-box">
+    <b>Easy shopping</b>
+    <span class="muted">
+      Add products to your cart and checkout directly on the website.
+    </span>
+  </div>
+
+  <div class="info-box">
+    <b>More products coming</b>
+    <span class="muted">
+      Clothing, bulbs, mobile accessories and other gadgets can be added later.
+    </span>
+  </div>
+
+</section>
+
+<footer>
+  © 2026 Trendz Blend
+</footer>
+
+
+<!-- CART -->
+
+<div id="cartSection">
+
+  <div class="cart-box">
+
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+
+      <button class="close-button" onclick="closeCart()">
+        ×
+      </button>
+    </div>
+
     <div id="cartContent"></div>
+
   </div>
+
 </div>
 
-<script>
-let qty=0;
-const product={name:"Ultrapods Max Wireless TWS",price:389,image:"tws-product.jpg"};
-function addToCart(){qty++;renderCart();openCart()}
-function changeQty(n){qty=Math.max(0,qty+n);renderCart()}
-function openCart(){document.getElementById("overlay").classList.add("open");renderCart()}
-function closeCart(){document.getElementById("overlay").classList.remove("open")}
-function closeIfOutside(e){if(e.target.id==="overlay")closeCart()}
-function money(n){return "₹"+n.toFixed(2)}
-function renderCart(){
- document.getElementById("count").textContent=qty;
- const el=document.getElementById("cartContent");
- if(!qty){el.innerHTML='<div class="empty">Your cart is empty.</div>';return}
- const subtotal=product.price*qty, advance=subtotal*.20, balance=subtotal-advance;
- el.innerHTML=`
- <div class="cart-item">
-  <img src="${product.image}" alt="">
-  <div><b>${product.name}</b><div class="muted">${money(product.price)}</div>
-   <div class="qty"><button onclick="changeQty(-1)">−</button><span>${qty}</span><button onclick="changeQty(1)">+</button></div>
-  </div><b>${money(subtotal)}</b>
- </div>
- <div class="summary">
-  <div class="row"><span>Subtotal</span><span>${money(subtotal)}</span></div>
-  <div class="row"><span>20% advance</span><span>${money(advance)}</span></div>
-  <div class="row total"><span>Balance on delivery</span><span>${money(balance)}</span></div>
- </div>
- <div class="checkout">
-  <h3>Checkout</h3>
-  <div class="notice"><b>Payment policy:</b> A 20% advance is required to confirm the order. The remaining 80% is payable on delivery.</div>
-  <input id="name" placeholder="Full name">
-  <input id="phone" placeholder="Mobile number" type="tel">
-  <textarea id="address" rows="3" placeholder="Full delivery address"></textarea>
-  <input id="city" placeholder="City">
-  <input id="state" placeholder="State">
-  <input id="pin" placeholder="PIN code">
-  <div class="pay"><b>Advance to pay now: ${money(advance)}</b><br><span class="muted">Online payment gateway will be connected after the store payment account is configured.</span></div>
-  <button class="btn" onclick="placeOrder()">Continue to payment</button>
- </div>`;
-}
-function placeOrder(){
- const fields=["name","phone","address","city","state","pin"];
- const missing=fields.some(id=>!document.getElementById(id)?.value.trim());
- if(missing){alert("Please complete all delivery details.");return}
- alert("Order details are ready. The live 20% advance payment gateway must be connected before accepting payment.");
-}
-renderCart();
-</script>
-<!-- Trendz Blend Order Checkout -->
-<div id="checkout" style="display:none; padding:20px; max-width:600px; margin:auto;">
-  <h2>Complete Your Order</h2>
-
-  <label>Name</label>
-  <input id="customerName" type="text" placeholder="Your name"
-    style="width:100%;padding:12px;margin:8px 0;">
-
-  <label>Phone</label>
-  <input id="customerPhone" type="tel" placeholder="Phone number"
-    style="width:100%;padding:12px;margin:8px 0;">
-
-  <label>Delivery Address</label>
-  <textarea id="customerAddress" placeholder="Full delivery address"
-    style="width:100%;padding:12px;margin:8px 0;"></textarea>
-
-  <div id="orderSummary" style="margin:15px 0;"></div>
-
-  <button onclick="placeOrder()"
-    style="width:100%;padding:14px;background:#111;color:white;border:0;border-radius:6px;">
-    Continue to 20% Advance Payment
-  </button>
-</div>
 
 <script>
-function calculateAdvance(total) {
-  return (total * 0.20).toFixed(2);
+
+let cartQty = 0;
+
+const product = {
+  name: "Ultrapods Max Wireless TWS",
+  price: 389,
+  image: "tws-product.jpg"
+};
+
+
+function addToCart() {
+
+  cartQty++;
+
+  updateCartCount();
+
+  openCart();
 }
 
-function placeOrder() {
-  const name = document.getElementById("customerName").value.trim();
-  const phone = document.getElementById("customerPhone").value.trim();
-  const address = document.getElementById("customerAddress").value.trim();
 
-  if (!name || !phone || !address) {
-    alert("Please enter your name, phone number and delivery address.");
+function updateCartCount() {
+
+  document.getElementById("cartCount").innerText = cartQty;
+
+}
+
+
+function openCart() {
+
+  document.getElementById("cartSection").style.display = "block";
+
+  renderCart();
+
+}
+
+
+function closeCart() {
+
+  document.getElementById("cartSection").style.display = "none";
+
+}
+
+
+function changeQty(amount) {
+
+  cartQty += amount;
+
+  if (cartQty < 0) {
+    cartQty = 0;
+  }
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+function money(value) {
+
+  return "₹" + value.toFixed(2);
+
+}
+
+
+function renderCart() {
+
+  const content = document.getElementById("cartContent");
+
+  if (cartQty === 0) {
+
+    content.innerHTML = `
+      <p style="text-align:center;padding:50px 0;">
+        Your cart is empty.
+      </p>
+    `;
+
     return;
   }
 
-  alert("Your order is ready. The next step will be the 20% advance payment.");
+
+  const subtotal = product.price * cartQty;
+
+  const advance = subtotal * 0.20;
+
+  const balance = subtotal - advance;
+
+
+  content.innerHTML = `
+
+    <div class="cart-item">
+
+      <img src="${product.image}" alt="${product.name}">
+
+      <div class="cart-details">
+
+        <b>${product.name}</b>
+
+        <div class="muted">
+          ${money(product.price)}
+        </div>
+
+        <div class="qty">
+
+          <button onclick="changeQty(-1)">
+            −
+          </button>
+
+          <span>${cartQty}</span>
+
+          <button onclick="changeQty(1)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+      <b>
+        ${money(subtotal)}
+      </b>
+
+    </div>
+
+
+    <div class="summary">
+
+      <div class="row">
+        <span>Subtotal</span>
+        <span>${money(subtotal)}</span>
+      </div>
+
+      <div class="row advance">
+        <span>20% advance</span>
+        <span>${money(advance)}</span>
+      </div>
+
+      <div class="row balance">
+        <span>Balance</span>
+        <span>${money(balance)}</span>
+      </div>
+
+    </div>
+
+
+    <button class="checkout-button" onclick="showCheckout()">
+      Proceed to Order
+    </button>
+
+
+    <div id="checkout">
+
+      <h3>Complete Your Order</h3>
+
+      <div class="notice">
+
+        <b>Payment required to confirm your order.</b>
+
+        <br><br>
+
+        A 20% advance payment is required before your order can be confirmed.
+        The remaining 80% will be payable on delivery.
+
+      </div>
+
+
+      <input
+        id="customerName"
+        type="text"
+        placeholder="Full name"
+      >
+
+      <input
+        id="customerPhone"
+        type="tel"
+        placeholder="Mobile number"
+      >
+
+      <textarea
+        id="customerAddress"
+        rows="3"
+        placeholder="Full delivery address"
+      ></textarea>
+
+      <input
+        id="customerCity"
+        type="text"
+        placeholder="City"
+      >
+
+      <input
+        id="customerState"
+        type="text"
+        placeholder="State"
+      >
+
+      <input
+        id="customerPin"
+        type="text"
+        placeholder="PIN code"
+      >
+
+
+      <div class="payment-box">
+
+        <b>
+          Advance payment: ${money(advance)}
+        </b>
+
+        <br><br>
+
+        <span class="muted">
+          Remaining balance: ${money(balance)}
+        </span>
+
+      </div>
+
+
+      <button class="pay-button" onclick="continueToPayment()">
+        Pay 20% Advance
+      </button>
+
+    </div>
+
+  `;
+
 }
 
-<script>
+
+function showCheckout() {
+
+  const checkout = document.getElementById("checkout");
+
+  checkout.style.display = "block";
+
+  checkout.scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
+
+function continueToPayment() {
+
+  const name =
+    document.getElementById("customerName").value.trim();
+
+  const phone =
+    document.getElementById("customerPhone").value.trim();
+
+  const address =
+    document.getElementById("customerAddress").value.trim();
+
+  const city =
+    document.getElementById("customerCity").value.trim();
+
+  const state =
+    document.getElementById("customerState").value.trim();
+
+  const pin =
+    document.getElementById("customerPin").value.trim();
+
+
+  if (
+    !name ||
+    !phone ||
+    !address ||
+    !city ||
+    !state ||
+    !pin
+  ) {
+
+    alert(
+      "Please enter all delivery details before continuing."
+    );
+
+    return;
+  }
+
+
+  const total = product.price * cartQty;
+
+  const advance = total * 0.20;
+
+
+  alert(
+    "Your order is ready.\n\n" +
+    "20% advance to pay: " +
+    money(advance) +
+    "\n\n" +
+    "Payment gateway will be connected next."
+  );
+
+}
+
+</script>
+
 </body>
 </html>
