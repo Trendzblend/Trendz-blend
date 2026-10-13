@@ -1,703 +1,170 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Trendz Blend | Fashion, Gadgets & More</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #f7f7f7;
-      color: #111;
-    }
-
-    header {
-      background: #111;
-      color: white;
-      padding: 18px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .cart-button {
-      background: white;
-      color: #111;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 55px 20px 35px;
-      background: white;
-    }
-
-    .hero h1 {
-      font-size: 38px;
-      margin-bottom: 12px;
-    }
-
-    .hero p {
-      color: #666;
-      font-size: 16px;
-    }
-
-    .products {
-      max-width: 1100px;
-      margin: auto;
-      padding: 30px 20px 60px;
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 15px;
-      overflow: hidden;
-      max-width: 380px;
-      margin: auto;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    }
-
-    .product-card img {
-      width: 100%;
-      height: 320px;
-      object-fit: contain;
-      background: #f5f5f5;
-    }
-
-    .product-info {
-      padding: 20px;
-    }
-
-    .category {
-      color: #777;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .product-name {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    .colours {
-      color: #666;
-      margin-bottom: 18px;
-    }
-
-    .add-button,
-    .checkout-button,
-    .pay-button {
-      width: 100%;
-      border: none;
-      padding: 14px;
-      border-radius: 8px;
-      background: #111;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .add-button:hover,
-    .checkout-button:hover,
-    .pay-button:hover {
-      opacity: 0.85;
-    }
-
-    .info-section {
-      max-width: 900px;
-      margin: 0 auto 50px;
-      padding: 0 20px;
-      display: grid;
-      gap: 15px;
-    }
-
-    .info-box {
-      background: white;
-      padding: 18px;
-      border-radius: 10px;
-    }
-
-    .info-box b {
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .muted {
-      color: #777;
-      font-size: 14px;
-    }
-
-    /* Cart */
-
-    #cartSection {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 100;
-      overflow-y: auto;
-    }
-
-    .cart-box {
-      background: white;
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 25px;
-      border-radius: 15px;
-      min-height: 500px;
-    }
-
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .close-button {
-      border: none;
-      background: #eee;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .cart-item {
-      display: flex;
-      gap: 15px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 18px;
-      margin-bottom: 18px;
-    }
-
-    .cart-item img {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      background: #f5f5f5;
-      border-radius: 8px;
-    }
-
-    .cart-details {
-      flex: 1;
-    }
-
-    .qty {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .qty button {
-      width: 30px;
-      height: 30px;
-      border: none;
-      background: #eee;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .summary {
-      border-top: 1px solid #ddd;
-      padding-top: 15px;
-      margin-top: 15px;
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .advance {
-      font-weight: bold;
-    }
-
-    .balance {
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    /* Checkout */
-
-    #checkout {
-      display: none;
-      margin-top: 25px;
-      border-top: 1px solid #ddd;
-      padding-top: 25px;
-    }
-
-    #checkout h3 {
-      margin-bottom: 15px;
-    }
-
-    .notice {
-      background: #fff4d6;
-      border: 1px solid #f0d78c;
-      padding: 14px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      font-size: 15px;
-    }
-
-    .payment-box {
-      background: #f5f5f5;
-      padding: 16px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      background: #111;
-      color: white;
-      margin-top: 30px;
-    }
-
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 30px;
-      }
-
-      .cart-box {
-        margin: 10px;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trendz Blend — Trends. Gadgets. More.</title>
+<meta name="description" content="Shop fashion, electronics, lighting and everyday accessories from Trendz Blend.">
+<style>
+:root{--ink:#21152f;--muted:#746a80;--purple:#6d28d9;--purple2:#4c1d95;--line:#eee8f5;--paper:#fbf9ff;--white:#fff;--green:#15803d}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper)}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cursor:pointer}
+.topline{background:#241333;color:#fff;text-align:center;padding:9px 12px;font-size:12px;letter-spacing:.3px}
+header{position:sticky;top:0;z-index:10;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;padding:16px 20px;display:flex;align-items:center;gap:20px}
+.brand{font-size:23px;font-weight:900;letter-spacing:-.8px;white-space:nowrap}.brand span{color:var(--purple)}
+.search{flex:1;max-width:440px;margin-left:auto;position:relative}.search input{width:100%;padding:12px 15px;border:1px solid var(--line);border-radius:14px;background:#f8f5fc;outline:none}.search input:focus{border-color:#b99ae9}
+.cartbtn{border:0;border-radius:13px;background:var(--purple);color:white;padding:12px 16px;font-weight:800;white-space:nowrap}
+main{max-width:1180px;margin:auto;padding:24px 20px 60px}
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:clamp(28px,6vw,68px);background:radial-gradient(circle at 85% 20%,#a78bfa 0,transparent 30%),linear-gradient(120deg,#211333,#4c1d95 65%,#6d28d9);color:#fff;min-height:290px;display:flex;align-items:center}
+.hero:after{content:"TB";position:absolute;right:7%;bottom:-75px;font-size:clamp(150px,24vw,290px);font-weight:1000;letter-spacing:-20px;color:#ffffff12;pointer-events:none}
+.hero-copy{max-width:600px;position:relative;z-index:1}.eyebrow{font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#ddd0ff}.hero h1{font-size:clamp(34px,5.4vw,62px);line-height:1.02;letter-spacing:-2px;margin:14px 0}.hero p{color:#eee6ff;max-width:500px;line-height:1.7;margin:0 0 22px}.hero a{display:inline-block;background:white;color:#38156b;border-radius:12px;padding:12px 17px;font-weight:900}
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 34px}.perk{background:#fff;border:1px solid var(--line);padding:16px;border-radius:16px;font-size:13px;color:var(--muted)}.perk strong{display:block;color:var(--ink);font-size:14px;margin-bottom:4px}
+.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 0 16px}.sectionhead h2{margin:0;font-size:27px;letter-spacing:-.8px}.sectionhead p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.filter{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 14px;color:#5c506a;font-weight:700;font-size:13px}.filter.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}.product{border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .18s,box-shadow .18s}.product:hover{transform:translateY(-3px);box-shadow:0 12px 35px #39205b12}
+.photo{height:210px;background:linear-gradient(145deg,#f1eaff,#faf8ff);display:flex;align-items:center;justify-content:center;overflow:hidden}.photo img{width:100%;height:100%;object-fit:contain;padding:12px}.photo .placeholder{font-size:50px;color:#a78bfa}.productbody{padding:15px;display:flex;flex:1;flex-direction:column}.tag{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--purple);margin-bottom:8px}.product h3{font-size:16px;margin:0 0 7px;line-height:1.35}.desc{font-size:12px;color:var(--muted);line-height:1.5;min-height:35px}.price-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0}.price{font-size:21px;font-weight:900}.stock{font-size:11px;color:var(--green);font-weight:800}.stock.out{color:#b91c1c}.add{border:0;background:#f0e8ff;color:#4c1d95;border-radius:11px;padding:11px;font-weight:900;width:100%}.add:disabled{opacity:.45;cursor:not-allowed}
+.status{padding:14px;border-radius:13px;background:#f2ebff;color:#4c1d95;font-size:13px;margin:12px 0}.empty{grid-column:1/-1;background:white;border:1px dashed #d9c9ef;border-radius:18px;padding:35px;text-align:center;color:var(--muted)}
+footer{background:#241333;color:#e9defa;padding:30px 20px}.foot{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.foot small{color:#c7b8dc}
+.overlay{position:fixed;inset:0;background:#160d22a8;z-index:30;display:none;justify-content:flex-end}.overlay.open{display:flex}.drawer{width:min(450px,100%);height:100%;background:white;padding:22px;overflow:auto;box-shadow:-15px 0 40px #0002}.drawerhead{display:flex;justify-content:space-between;align-items:center}.drawerhead h2{margin:0}.xbtn{border:0;background:#f2edf7;border-radius:10px;padding:8px 12px;font-weight:900}.cartitems{margin:20px 0}.cartitem{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.cartitem small{display:block;color:var(--muted);margin-top:4px}.qty{display:flex;align-items:center;gap:8px;margin-top:9px}.qty button{border:1px solid var(--line);background:white;border-radius:7px;width:27px;height:27px}.summary{border-top:1px solid var(--line);padding-top:15px}.sumrow{display:flex;justify-content:space-between;margin:10px 0;color:var(--muted);font-size:14px}.sumrow.total{color:var(--ink);font-weight:900;font-size:17px}.policy{font-size:12px;color:#5d4a70;line-height:1.55;background:#f5f0ff;border-radius:12px;padding:12px;margin:15px 0}.checkout{width:100%;border:0;border-radius:12px;padding:14px;background:var(--purple);color:white;font-weight:900}.checkout:disabled{background:#a8a0b3}.fineprint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.photo{height:180px}}
+@media(max-width:650px){.nav{padding:13px;gap:10px;flex-wrap:wrap}.brand{font-size:21px}.search{order:3;flex-basis:100%;max-width:none}.cartbtn{margin-left:auto}main{padding:16px 13px 42px}.hero{border-radius:22px;min-height:300px;padding:28px 23px}.perks{grid-template-columns:1fr;gap:8px}.perk{padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:150px}.productbody{padding:12px}.product h3{font-size:14px}.price{font-size:18px}.sectionhead h2{font-size:23px}}
+@media(max-width:360px){.grid{grid-template-columns:1fr}.photo{height:210px}}
+</style>
 </head>
-
 <body>
-
-<header>
-  <div class="logo">Trendz Blend</div>
-
-  <button class="cart-button" onclick="openCart()">
-    Cart <span id="cartCount">0</span>
-  </button>
-</header>
-
-<section class="hero">
-  <h1>Trends. Gadgets. More.</h1>
-  <p>
-    Shop fashion, electronics, lighting and everyday accessories from Trendz Blend.
-  </p>
-</section>
-
-<section class="products">
-
-  <div class="product-card">
-
-    <img src="tws-product.jpg" alt="Ultrapods Max Wireless TWS">
-
-    <div class="product-info">
-
-      <div class="category">Electronics</div>
-
-      <div class="product-name">
-        Ultrapods Max Wireless TWS
-      </div>
-
-      <div class="price">
-        ₹389
-      </div>
-
-      <div class="colours">
-        Colours: Black, White, Pink, Green, Blue
-      </div>
-
-      <button class="add-button" onclick="addToCart()">
-        Add to Cart
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-<section class="info-section">
-
-  <div class="info-box">
-    <b>Easy shopping</b>
-    <span class="muted">
-      Add products to your cart and checkout directly on the website.
-    </span>
-  </div>
-
-  <div class="info-box">
-    <b>More products coming</b>
-    <span class="muted">
-      Clothing, bulbs, mobile accessories and other gadgets can be added later.
-    </span>
-  </div>
-
-</section>
-
-<footer>
-  © 2026 Trendz Blend
-</footer>
-
-
-<!-- CART -->
-
-<div id="cartSection">
-
-  <div class="cart-box">
-
-    <div class="cart-header">
-      <h2>Your Cart</h2>
-
-      <button class="close-button" onclick="closeCart()">
-        ×
-      </button>
-    </div>
-
-    <div id="cartContent"></div>
-
-  </div>
-
+<div class="topline">TRENDZ BLEND · FASHION, GADGETS & EVERYDAY ESSENTIALS</div>
+<header><div class="nav">
+<a class="brand" href="./">Trendz <span>Blend</span></a>
+<div class="search"><input id="searchInput" type="search" placeholder="Search products…" aria-label="Search products"></div>
+<button class="cartbtn" id="openCart">Cart <span id="cartCount">0</span></button>
+</div></header>
+<main>
+<section class="hero"><div class="hero-copy">
+<div class="eyebrow">Discover your next favourite</div>
+<h1>Trends.<br>Gadgets. More.</h1>
+<p>Shop fashion, electronics, lighting and everyday accessories from Trendz Blend.</p>
+<a href="#products">Explore collection ↓</a>
+</div></section>
+<div class="perks">
+<div class="perk"><strong>✦ Curated essentials</strong>Everyday products in one place.</div>
+<div class="perk"><strong>✦ Clear pricing</strong>Product prices and availability shown upfront.</div>
+<div class="perk"><strong>✦ Payment transparency</strong>Any advance/balance terms are shown at checkout before ordering.</div>
 </div>
-
-
+<section id="products">
+<div class="sectionhead"><div><h2>Shop the collection</h2><p id="productSub">Discover the latest from Trendz Blend.</p></div></div>
+<div class="filters" id="filters"><button class="filter active" data-category="All">All products</button><button class="filter" data-category="Electronics">Electronics</button><button class="filter" data-category="Fashion">Fashion</button><button class="filter" data-category="Lighting">Lighting</button><button class="filter" data-category="Accessories">Accessories</button></div>
+<div id="connectionStatus" class="status">Connecting to the product catalogue…</div>
+<div class="grid" id="productGrid"></div>
+</section>
+</main>
+<footer><div class="foot"><div><strong>Trendz Blend</strong><br><small>Trends. Gadgets. More.</small></div><small>Product availability and checkout status are confirmed before an order is accepted.</small></div></footer>
+<div class="overlay" id="cartOverlay" role="dialog" aria-modal="true" aria-label="Shopping cart"><div class="drawer">
+<div class="drawerhead"><h2>Your cart</h2><button class="xbtn" id="closeCart">Close ✕</button></div>
+<div id="cartItems" class="cartitems"></div>
+<div class="summary">
+<div class="sumrow"><span>Subtotal</span><strong id="subtotal">₹0.00</strong></div>
+<div class="sumrow"><span>20% advance (estimate)</span><strong id="advance">₹0.00</strong></div>
+<div class="sumrow"><span>80% balance on delivery (estimate)</span><strong id="balance">₹0.00</strong></div>
+<div class="policy">Payment policy: if the order flow offers the 20% advance option, the remaining 80% is payable on delivery. These figures are estimates only. No payment is collected on this demo storefront.</div>
+<button class="checkout" id="checkout" disabled>Checkout not available yet</button>
+<div class="fineprint">Secure order creation and a verified payment gateway must be connected before checkout can be enabled. Do not send payment to anyone based only on this page.</div>
+</div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+(() => {
+  const SUPABASE_URL = "https://ddfloqotdlqtekkzrjtw.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_c6jiIQo_G-wL7o6Zq5xNGQ_aLT5KKgT";
+  const $ = id => document.getElementById(id);
+  const money = n => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(Number(n)||0);
+  let supabase = null, products = [], category = "All", search = "";
+  let cart = {};
+  try { cart = JSON.parse(localStorage.getItem("tb_cart") || "{}") || {}; } catch (_) { cart = {}; }
+  try { supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch (_) {}
 
-let cartQty = 0;
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  function productName(p){ return p.name || p.title || "Product"; }
+  function productPrice(p){ return Number(p.price ?? p.selling_price ?? 0); }
+  function productStock(p){ return Number(p.stock ?? p.inventory ?? 0); }
+  function productImage(p){ return p.image_url || p.image || p.imageUrl || ""; }
+  function productCategory(p){ return p.category || "Accessories"; }
 
-const product = {
-  name: "Ultrapods Max Wireless TWS",
-  price: 389,
-  image: "tws-product.jpg"
-};
-
-
-function addToCart() {
-
-  cartQty++;
-
-  updateCartCount();
-
-  openCart();
-}
-
-
-function updateCartCount() {
-
-  document.getElementById("cartCount").innerText = cartQty;
-
-}
-
-
-function openCart() {
-
-  document.getElementById("cartSection").style.display = "block";
-
-  renderCart();
-
-}
-
-
-function closeCart() {
-
-  document.getElementById("cartSection").style.display = "none";
-
-}
-
-
-function changeQty(amount) {
-
-  cartQty += amount;
-
-  if (cartQty < 0) {
-    cartQty = 0;
+  function renderProducts() {
+    const list = products.filter(p => {
+      const okCat = category === "All" || productCategory(p).toLowerCase() === category.toLowerCase();
+      const hay = `${productName(p)} ${p.description||""} ${productCategory(p)}`.toLowerCase();
+      return okCat && hay.includes(search);
+    });
+    $("productGrid").innerHTML = list.length ? list.map(p => {
+      const id = String(p.id ?? p.sku ?? productName(p));
+      const img = productImage(p);
+      const stock = productStock(p);
+      return `<article class="product"><div class="photo">${img ? `<img src="${escapeHTML(img)}" alt="${escapeHTML(productName(p))}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="placeholder" style="display:none">◇</span>` : `<span class="placeholder">◇</span>`}</div><div class="productbody"><div class="tag">${escapeHTML(productCategory(p))}</div><h3>${escapeHTML(productName(p))}</h3><div class="desc">${escapeHTML(p.description || "A Trendz Blend everyday essential.")}</div><div class="price-row"><span class="price">${money(productPrice(p))}</span><span class="stock ${stock<=0?'out':''}">${stock>0?`${stock} in stock`:"Out of stock"}</span></div><button class="add" data-add="${escapeHTML(id)}" ${stock<=0?"disabled":""}>${stock>0?"Add to cart":"Unavailable"}</button></div></article>`;
+    }).join("") : `<div class="empty">No products found. Try another category or search term.</div>`;
+    $("productSub").textContent = `${list.length} product${list.length===1?"":"s"} available in this view.`;
+    $("connectionStatus").style.display = "none";
   }
 
-  updateCartCount();
-
-  renderCart();
-
-}
-
-
-function money(value) {
-
-  return "₹" + value.toFixed(2);
-
-}
-
-
-function renderCart() {
-
-  const content = document.getElementById("cartContent");
-
-  if (cartQty === 0) {
-
-    content.innerHTML = `
-      <p style="text-align:center;padding:50px 0;">
-        Your cart is empty.
-      </p>
-    `;
-
-    return;
+  async function loadProducts() {
+    if (!supabase) {
+      $("connectionStatus").textContent = "Catalogue connection could not start. Please refresh later.";
+      return;
+    }
+    $("connectionStatus").textContent = "Loading products…";
+    const {data,error} = await supabase.from("products").select("*").eq("active",true).order("created_at",{ascending:false});
+    if (error) {
+      console.error("Product catalogue error:", error.message);
+      $("connectionStatus").textContent = "We couldn't load products from the catalogue. Please try again later.";
+      return;
+    }
+    products = data || [];
+    renderProducts();
+    if (supabase.channel) {
+      supabase.channel("public-products-live")
+        .on("postgres_changes",{event:"*",schema:"public",table:"products"},() => loadProducts())
+        .subscribe();
+    }
   }
 
+  function saveCart(){ try{localStorage.setItem("tb_cart",JSON.stringify(cart));}catch(_){} }
+  function cartLines(){return Object.entries(cart).map(([id,qty])=>({p:products.find(p=>String(p.id??p.sku??productName(p))===id),id,qty:Number(qty)})).filter(x=>x.p&&x.qty>0);}
+  function renderCart(){
+    const lines=cartLines();
+    const count=lines.reduce((s,x)=>s+x.qty,0);
+    $("cartCount").textContent=count;
+    $("cartItems").innerHTML=lines.length?lines.map(({p,id,qty})=>`<div class="cartitem"><div><strong>${escapeHTML(productName(p))}</strong><small>${money(productPrice(p))} each</small><div class="qty"><button data-qty="${escapeHTML(id)}" data-delta="-1" aria-label="Decrease quantity">−</button><span>${qty}</span><button data-qty="${escapeHTML(id)}" data-delta="1" aria-label="Increase quantity">+</button></div></div><strong>${money(productPrice(p)*qty)}</strong></div>`).join(""):`<div class="empty">Your cart is empty.</div>`;
+    const total=lines.reduce((s,x)=>s+productPrice(x.p)*x.qty,0);
+    $("subtotal").textContent=money(total);$("advance").textContent=money(total*.2);$("balance").textContent=money(total*.8);
+    $("checkout").disabled=true;
+    $("checkout").textContent=lines.length?"Checkout not available yet":"Add products to continue";
+  }
 
-  const subtotal = product.price * cartQty;
-
-  const advance = subtotal * 0.20;
-
-  const balance = subtotal - advance;
-
-
-  content.innerHTML = `
-
-    <div class="cart-item">
-
-      <img src="${product.image}" alt="${product.name}">
-
-      <div class="cart-details">
-
-        <b>${product.name}</b>
-
-        <div class="muted">
-          ${money(product.price)}
-        </div>
-
-        <div class="qty">
-
-          <button onclick="changeQty(-1)">
-            −
-          </button>
-
-          <span>${cartQty}</span>
-
-          <button onclick="changeQty(1)">
-            +
-          </button>
-
-        </div>
-
-      </div>
-
-      <b>
-        ${money(subtotal)}
-      </b>
-
-    </div>
-
-
-    <div class="summary">
-
-      <div class="row">
-        <span>Subtotal</span>
-        <span>${money(subtotal)}</span>
-      </div>
-
-      <div class="row advance">
-        <span>20% advance</span>
-        <span>${money(advance)}</span>
-      </div>
-
-      <div class="row balance">
-        <span>Balance</span>
-        <span>${money(balance)}</span>
-      </div>
-
-    </div>
-
-
-    <button class="checkout-button" onclick="showCheckout()">
-      Proceed to Order
-    </button>
-
-
-    <div id="checkout">
-
-      <h3>Complete Your Order</h3>
-
-      <div class="notice">
-
-        <b>Payment required to confirm your order.</b>
-
-        <br><br>
-
-        A 20% advance payment is required before your order can be confirmed.
-        The remaining 80% will be payable on delivery.
-
-      </div>
-
-
-      <input
-        id="customerName"
-        type="text"
-        placeholder="Full name"
-      >
-
-      <input
-        id="customerPhone"
-        type="tel"
-        placeholder="Mobile number"
-      >
-
-      <textarea
-        id="customerAddress"
-        rows="3"
-        placeholder="Full delivery address"
-      ></textarea>
-
-      <input
-        id="customerCity"
-        type="text"
-        placeholder="City"
-      >
-
-      <input
-        id="customerState"
-        type="text"
-        placeholder="State"
-      >
-
-      <input
-        id="customerPin"
-        type="text"
-        placeholder="PIN code"
-      >
-
-
-      <div class="payment-box">
-
-        <b>
-          Advance payment: ${money(advance)}
-        </b>
-
-        <br><br>
-
-        <span class="muted">
-          Remaining balance: ${money(balance)}
-        </span>
-
-      </div>
-
-
-      <button class="pay-button" onclick="continueToPayment()">
-        Pay 20% Advance
-      </button>
-
-    </div>
-
-  `;
-
-}
-
-
-function showCheckout() {
-
-  const checkout = document.getElementById("checkout");
-
-  checkout.style.display = "block";
-
-  checkout.scrollIntoView({
-    behavior: "smooth"
+  $("productGrid").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-add]");if(!btn)return;
+    const id=btn.dataset.add;const p=products.find(x=>String(x.id??x.sku??productName(x))===id);if(!p)return;
+    cart[id]=(Number(cart[id])||0)+1;saveCart();renderCart();
+    btn.textContent="Added ✓";setTimeout(()=>{if(btn.isConnected)btn.textContent="Add to cart";},900);
   });
-
-}
-
-
-function continueToPayment() {
-
-  const name =
-    document.getElementById("customerName").value.trim();
-
-  const phone =
-    document.getElementById("customerPhone").value.trim();
-
-  const address =
-    document.getElementById("customerAddress").value.trim();
-
-  const city =
-    document.getElementById("customerCity").value.trim();
-
-  const state =
-    document.getElementById("customerState").value.trim();
-
-  const pin =
-    document.getElementById("customerPin").value.trim();
-
-
-  if (
-    !name ||
-    !phone ||
-    !address ||
-    !city ||
-    !state ||
-    !pin
-  ) {
-
-    alert(
-      "Please enter all delivery details before continuing."
-    );
-
-    return;
-  }
-
-
-  const total = product.price * cartQty;
-
-  const advance = total * 0.20;
-
-
-  alert(
-    "Your order is ready.\n\n" +
-    "20% advance to pay: " +
-    money(advance) +
-    "\n\n" +
-    "Payment gateway will be connected next."
-  );
-
-}
-
+  $("cartItems").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-qty]");if(!btn)return;
+    const id=btn.dataset.qty;cart[id]=(Number(cart[id])||0)+Number(btn.dataset.delta);
+    if(cart[id]<=0)delete cart[id];saveCart();renderCart();
+  });
+  $("searchInput").addEventListener("input",e=>{search=e.target.value.trim().toLowerCase();renderProducts();});
+  $("filters").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-category]");if(!btn)return;
+    category=btn.dataset.category;
+    document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b===btn));
+    renderProducts();
+  });
+  $("openCart").addEventListener("click",()=>{$("cartOverlay").classList.add("open");renderCart();});
+  $("closeCart").addEventListener("click",()=>$("cartOverlay").classList.remove("open"));
+  $("cartOverlay").addEventListener("click",e=>{if(e.target===$("cartOverlay"))$("cartOverlay").classList.remove("open");});
+  renderCart();
+  loadProducts();
+})();
 </script>
-
 </body>
 </html>
