@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trendz Blend Admin</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5f8;color:#172033}
+header{background:#111827;color:white;padding:20px}
+header h1{margin:0;font-size:24px}
+header p{margin:7px 0 0;color:#cbd5e1}
+main{max-width:900px;margin:25px auto;padding:15px}
+.card{background:white;padding:20px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 15px #0000000c}
+h2{margin-top:0;font-size:20px}
+label{display:block;font-weight:bold;margin:13px 0 6px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #ccd2dc;border-radius:8px;font-size:16px}
+button{border:0;border-radius:8px;padding:13px 16px;background:#111827;color:white;font-weight:bold;font-size:15px;cursor:pointer}
+button:disabled{opacity:.5}
+.primary{width:100%;margin-top:18px;background:#087443}
+.note{background:#fff4d6;padding:13px;border-radius:8px;font-size:14px;line-height:1.5}
+#status{margin-top:14px;overflow-wrap:anywhere}
+.product{border-top:1px solid #ddd;padding:15px 0}
+.small{font-size:13px;color:#64748b}
+</style>
+</head>
+<body>
+<header>
+<h1>Trendz Blend</h1>
+<p>Private Store Admin · Inventory Management</p>
+</header>
+
+<main>
+<section class="card" id="loginCard">
+<h2>Administrator Login</h2>
+<p class="note">Sign in using the administrator account you created in Supabase Authentication. Only your authorized account should manage store inventory.</p>
+<label for="email">Admin email</label>
+<input id="email" type="email" autocomplete="username" placeholder="Your admin email">
+<label for="password">Password</label>
+<input id="password" type="password" autocomplete="current-password" placeholder="Your password">
+<button class="primary" id="loginBtn" onclick="login()">Sign in</button>
+<div id="loginStatus" role="status"></div>
+</section>
+
+<section class="card" id="inventoryCard" hidden>
+<h2>Add a product</h2>
+<p class="small">Products are saved to your Supabase database. Image URL can be a publicly accessible image URL.</p>
+<form id="productForm">
+<label for="sku">Product code (SKU)</label>
+<input id="sku" required placeholder="e.g. TWS-002">
+<label for="name">Product name</label>
+<input id="name" required placeholder="Product name">
+<label for="description">Description</label>
+<textarea id="description" rows="3" placeholder="Product details"></textarea>
+<label for="price">Price (₹)</label>
+<input id="price" type="number" min="0.01" step="0.01" required>
+<label for="stock">Stock quantity</label>
+<input id="stock" type="number" min="0" step="1" value="0" required>
+<label for="imageUrl">Product image URL</label>
+<input id="imageUrl" type="url" placeholder="https://...">
+<label for="category">Category</label>
+<input id="category" placeholder="Electronics, Clothing, Accessories">
+<button class="primary" type="submit">Save product</button>
+</form>
+<div id="saveStatus" role="status"></div>
+</section>
+
+<section class="card" id="productsCard" hidden>
+<h2>Inventory</h2>
+<button onclick="loadProducts()">Refresh inventory</button>
+<div id="productsList">Loading products…</div>
+</section>
+
+<section class="card" id="logoutCard" hidden>
+<button onclick="logout()">Sign out</button>
+</section>
+</main>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const SUPABASE_URL = "https://ddfloqotdlqtekkzrjtw.supabase.co";
+
+/*
+  Replace this placeholder with the Supabase publishable/anon key.
+  Never put a service_role or secret key in this public HTML file.
+*/
+const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+const status = (id, text, error=false) => {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.style.color = error ? "#b42318" : "#087443";
+};
+
+const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function isAdmin() {
+  const {data:{user},error:userError} = await client.auth.getUser();
+  if (userError || !user) return false;
+  const {data,error} = await client.rpc("is_store_admin");
+  if (error) {
+    status("loginStatus","Could not verify administrator permissions. Check database permissions.",true);
+    return false;
+  }
+  return data === true;
+}
+
+async function showDashboard() {
+  const allowed = await isAdmin();
+  if (!allowed) {
+    document.getElementById("loginCard").hidden = false;
+    document.getElementById("inventoryCard").hidden = true;
+    document.getElementById("productsCard").hidden = true;
+    document.getElementById("logoutCard").hidden = true;
+    return;
+  }
+  document.getElementById("loginCard").hidden = true;
+  document.getElementById("inventoryCard").hidden = false;
+  document.getElementById("productsCard").hidden = false;
+  document.getElementById("logoutCard").hidden = false;
+  await loadProducts();
+}
+
+window.login = async function() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  if (!email || !password) {
+    status("loginStatus","Enter your email and password.",true);
+    return;
+  }
+  status("loginStatus","Signing in…");
+  const {error} = await client.auth.signInWithPassword({email,password});
+  if (error) {
+    status("loginStatus","Sign-in failed: " + error.message,true);
+    return;
+  }
+  await showDashboard();
+};
+
+window.logout = async function() {
+  await client.auth.signOut();
+  location.reload();
+};
+
+document.getElementById("productForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!(await isAdmin())) {
+    status("saveStatus","Not authorized. Please sign in again.",true);
+    return;
+  }
+
+  const item = {
+    sku: document.getElementById("sku").value.trim(),
+    name: document.getElementById("name").value.trim(),
+    description: document.getElementById("description").value.trim() || null,
+    price: Number(document.getElementById("price").value),
+    stock: Number(document.getElementById("stock").value),
+    image_url: document.getElementById("imageUrl").value.trim() || null,
+    category: document.getElementById("category").value.trim() || null
+  };
+
+  status("saveStatus","Saving product…");
+  const {error} = await client.from("products").insert(item);
+  if (error) {
+    status("saveStatus","Could not save product: " + error.message,true);
+    return;
+  }
+  status("saveStatus","Product saved successfully.");
+  document.getElementById("productForm").reset();
+  document.getElementById("stock").value = "0";
+  await loadProducts();
+});
+
+async function loadProducts() {
+  const list = document.getElementById("productsList");
+  list.textContent = "Loading…";
+  const {data,error} = await client
+    .from("products")
+    .select("*")
+    .order("id",{ascending:false});
+  if (error) {
+    list.textContent = "Could not load products: " + error.message;
+    return;
+  }
+  list.replaceChildren();
+  if (!data || data.length === 0) {
+    list.textContent = "No products saved yet.";
+    return;
+  }
+  for (const p of data) {
+    const div = document.createElement("div");
+    div.className = "product";
+    const title = document.createElement("strong");
+    title.textContent = p.name || "Unnamed product";
+    const details = document.createElement("p");
+    details.textContent = `SKU: ${p.sku || "—"} · Price: ₹${p.price} · Stock: ${p.stock ?? "—"}`;
+    div.append(title,details);
+    if (p.description) {
+      const desc = document.createElement("p");
+      desc.textContent = p.description;
+      div.append(desc);
+    }
+    list.append(div);
+  }
+}
+window.loadProducts = loadProducts;
+
+if (SUPABASE_ANON_KEY !== "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE") {
+  client.auth.onAuthStateChange(() => {});
+  await showDashboard();
+} else {
+  status("loginStatus","Admin page created. Supabase publishable key must be configured before login works.");
+}
+</script>
+</body>
+  </html>
